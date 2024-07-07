@@ -1,14 +1,13 @@
+import contacts from "../../contacts.json"
+import ContactList from "../ContactList/ContactList"
 
-import './App.css'
 
 export default function App() {
   return (
-    <div>
+<>
   <h1>Phonebook</h1>
-  <ContactForm />
-  <SearchBox />
-  <ContactList />
-</div>
+  <ContactList contacts={contacts}/>
+</>
   )
 }
 
