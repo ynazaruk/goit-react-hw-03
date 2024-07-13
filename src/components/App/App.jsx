@@ -4,7 +4,13 @@ import ContactList from "../ContactList/ContactList"
 import css from "./App.module.css"
 import SearchBox from "../SearchBox/SearchBox"
 import ContactForm from "../ContactForm/ContactForm"
+import * as Yup from "yup";
 
+
+const ContactShema = Yup.object().shape({
+  name: Yup.string().min(3, "Too Short!").max(50, "Too long!").required("Required"),
+  number: Yup.string().min(3, "Too Short!").max(50, "Too long!").required("Required"),
+});
 
 const initialContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
