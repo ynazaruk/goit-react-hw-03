@@ -7,15 +7,15 @@ import css from "./ContactForm.module.css"
 
 export default function ContactForm({addContact}) {
 
-    const initialValues ={
+    const initialValues = {
         name: "",
         number: "",
     };
 
 
     const validationSchema = Yup.object({
-        name: Yup.string().min(3, "Name must be at least 3 characters!").max(50, "Name must be less than 50 characters!").required("Required"),
-        number: Yup.string().min(3, "Number must be at least 3 characters").max(50, "Number must be less than 50 characters!").required("Required"),
+        name: Yup.string().min(3, "Too short!").max(50, "Too Long!").required("Required"),
+        number: Yup.string().min(3, "Too Short!").max(50, "Too Long!").required("Required"),
       });
 
     const handleSubmit = (values, actions) => {
