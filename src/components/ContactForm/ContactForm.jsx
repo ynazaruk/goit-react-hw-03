@@ -1,11 +1,9 @@
 import { Form, Field, Formik, ErrorMessage} from "formik"
 import { nanoid } from 'nanoid'
 import * as Yup from "yup";
+import css from "./ContactForm.module.css"
 
-const validationSchema = Yup.object().shape({
-    name: Yup.string().min(3, "Too Short!").max(50, "Too long!").required("Required"),
-    number: Yup.string().min(3, "Too Short!").max(50, "Too long!").required("Required"),
-  });
+
 
 export default function ContactForm({addContact}) {
 
@@ -14,11 +12,16 @@ export default function ContactForm({addContact}) {
         number: "",
     };
 
+
+    const validationSchema = Yup.object({
+        name: Yup.string().min(3, "Name must be at least 3 characters!").max(50, "Name must be less than 50 characters!").required("Required"),
+        number: Yup.string().min(3, "Number must be at least 3 characters").max(50, "Number must be less than 50 characters!").required("Required"),
+      });
+
     const handleSubmit = (values, actions) => {
         const newContact ={
             id: nanoid(),
-            name: values.name,
-            number: values.number,
+            ...values,
         };
         addContact(newContact);
         actions.resetForm();
@@ -28,14 +31,14 @@ export default function ContactForm({addContact}) {
         <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
             <Form>
                 <div>
-                    <label htmlFor="name" id="name">Name</label>
+                <label htmlFor="name" >Name</label>
                 <Field type="text" name="name"></Field>
-                <ErrorMessage name="name" component="div" />
+                <ErrorMessage name="name" component="div" className={css.error} />
                 </div>
                 <div className="inputSection">
-                    <label className="css.label" htmlFor="number" id="number">Number</label>
+                    <label className="css.label" htmlFor="number" >Number</label>
                     <Field type="text" name="number"></Field>
-                    <ErrorMessage name="name" component="div" />
+                    <ErrorMessage  name="name" component="div" className={css.error} />
                 </div>
                 <button className="inputBtn" type="submit">Add contact</button>
             </Form>

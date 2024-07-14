@@ -4,13 +4,9 @@ import ContactList from "../ContactList/ContactList"
 import css from "./App.module.css"
 import SearchBox from "../SearchBox/SearchBox"
 import ContactForm from "../ContactForm/ContactForm"
-import * as Yup from "yup";
 
 
-const ContactShema = Yup.object().shape({
-  name: Yup.string().min(3, "Too Short!").max(50, "Too long!").required("Required"),
-  number: Yup.string().min(3, "Too Short!").max(50, "Too long!").required("Required"),
-});
+
 
 const initialContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -21,6 +17,8 @@ const initialContacts = [
 
 export default function App() {
   const [contacts, setContacts]= useState(initialContacts);  
+  const [searchTerm, setSearchTerm] = useState("");
+
   
   useEffect(() => {
     const storedContacts = localStorage.getItem("contacts")
@@ -32,7 +30,7 @@ export default function App() {
     }
   }, []); 
 
-  const [searchTerm, setSearchTerm] = useState("");
+  
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -42,17 +40,29 @@ export default function App() {
     contact.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-const handleAddContact = (newContact) => {
-  setContacts([...contacts, newContact])
+const handleAddContact = (contact) => {
+  const newContacts = [...contacts, contact];
+  setContacts(newContacts);
+  updateLocalStorage(newContacts);
 }
+
+const updateLocalStorage = (updatedContacts) => {
+  localStorage.setItem('contacts', JSON.stringify(updatedContacts));
+};
+
+const deleteContact = (id) => {
+  const updatedContacts = contacts.filter(contact => contact.id !== id);
+    setContacts(updatedContacts);
+    updateLocalStorage(updatedContacts);
+};
 
   return (
 <div className={css.container}>
   <h1>Phonebook</h1>
   <ContactForm addContact={handleAddContact}/>
   <SearchBox value={searchTerm} onChange={handleSearchChange} />
-  <ContactList contacts={filteredContacts} searchTerm={searchTerm}/>
+  <ContactList contacts={filteredContacts} searchTerm={searchTerm} onDelete={deleteContact}/>
 </div>
-  )
+  );
 };
 

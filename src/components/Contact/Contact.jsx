@@ -1,7 +1,9 @@
 import { HiUser, HiPhone } from "react-icons/hi";
 import css from "./Contact.module.css"
 
-export default function Contact({contact}) {
+
+
+export default function Contact({contact, onDelete}) {
     return (
         <div className={css.container}>
       <address>
@@ -15,7 +17,7 @@ export default function Contact({contact}) {
         </div>
       </address>
       <form>
-        <button type="button" className={css.btn}>Delete</button>
+        <button type="button" className={css.btn} onClick={()=>onDelete(contact.id)}>Delete</button>
       </form>
     </div>
     )
